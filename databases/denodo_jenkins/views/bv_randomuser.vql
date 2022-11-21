@@ -1,0 +1,165 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JSON ds_randomuser
+    DATASOURCENAME=ds_randomuser
+    TUPLEROOT '/JSONFile'
+    ROUTE HTTP 'http.CommonsHttpClientConnection,120000' GET '${databases.denodo_jenkins.views.json.ds_randomuser.ROUTE.HTTP.URL}'
+    OUTPUTSCHEMA (jsonfile = 'JSONFile' : REGISTER OF (
+        results = 'results' : ARRAY OF (
+            results = 'results' : REGISTER OF (
+                gender = 'gender' : 'java.lang.String',
+                name = 'name' : REGISTER OF (
+                    title = 'title' : 'java.lang.String',
+                    first = 'first' : 'java.lang.String',
+                    last = 'last' : 'java.lang.String'
+                ),
+                location = 'location' : REGISTER OF (
+                    street = 'street' : REGISTER OF (
+                        number = 'number' : 'java.lang.Integer',
+                        name = 'name' : 'java.lang.String'
+                    ),
+                    city = 'city' : 'java.lang.String',
+                    state = 'state' : 'java.lang.String',
+                    country = 'country' : 'java.lang.String',
+                    postcode = 'postcode' : 'java.lang.Integer',
+                    coordinates = 'coordinates' : REGISTER OF (
+                        latitude = 'latitude' : 'java.lang.String',
+                        longitude = 'longitude' : 'java.lang.String'
+                    ),
+                    timezone = 'timezone' : REGISTER OF (
+                        offset_0 = 'offset' : 'java.lang.String',
+                        description = 'description' : 'java.lang.String'
+                    )
+                ),
+                email = 'email' : 'java.lang.String',
+                login = 'login' : REGISTER OF (
+                    uuid = 'uuid' : 'java.lang.String',
+                    username = 'username' : 'java.lang.String',
+                    password = 'password' : 'java.lang.String',
+                    salt = 'salt' : 'java.lang.String',
+                    md5 = 'md5' : 'java.lang.String',
+                    sha1 = 'sha1' : 'java.lang.String',
+                    sha256 = 'sha256' : 'java.lang.String'
+                ),
+                dob = 'dob' : REGISTER OF (
+                    date = 'date' : 'java.lang.String',
+                    age = 'age' : 'java.lang.Integer'
+                ),
+                registered = 'registered' : REGISTER OF (
+                    date = 'date' : 'java.lang.String',
+                    age = 'age' : 'java.lang.Integer'
+                ),
+                phone = 'phone' : 'java.lang.String',
+                cell = 'cell' : 'java.lang.String',
+                id = 'id' : REGISTER OF (
+                    name = 'name' : 'java.lang.String',
+                    value = 'value' : 'java.lang.String'
+                ),
+                picture = 'picture' : REGISTER OF (
+                    large = 'large' : 'java.lang.String',
+                    medium = 'medium' : 'java.lang.String',
+                    thumbnail = 'thumbnail' : 'java.lang.String'
+                ),
+                nat = 'nat' : 'java.lang.String'
+            )
+        ),
+        info = 'info' : REGISTER OF (
+            seed = 'seed' : 'java.lang.String',
+            results = 'results' : 'java.lang.Integer',
+            page = 'page' : 'java.lang.Integer',
+            version = 'version' : 'java.lang.String'
+        )
+    )
+    );
+
+CREATE OR REPLACE TYPE ds_randomuser_results_results_name AS REGISTER OF (title:text, first:text, last:text);
+
+CREATE OR REPLACE TYPE ds_randomuser_results_results_location_street AS REGISTER OF (number:int, name:text);
+
+CREATE OR REPLACE TYPE ds_randomuser_results_results_location_coordinates AS REGISTER OF (latitude:text, longitude:text);
+
+CREATE OR REPLACE TYPE ds_randomuser_results_results_location_timezone AS REGISTER OF (offset_0:text, description:text);
+
+CREATE OR REPLACE TYPE ds_randomuser_results_results_location AS REGISTER OF (street:ds_randomuser_results_results_location_street, city:text, state:text, country:text, postcode:int, coordinates:ds_randomuser_results_results_location_coordinates, timezone:ds_randomuser_results_results_location_timezone);
+
+CREATE OR REPLACE TYPE ds_randomuser_results_results_login AS REGISTER OF (uuid:text, username:text, password:text, salt:text, md5:text, sha1:text, sha256:text);
+
+CREATE OR REPLACE TYPE ds_randomuser_results_results_dob AS REGISTER OF (date:text, age:int);
+
+CREATE OR REPLACE TYPE ds_randomuser_results_results_registered AS REGISTER OF (date:text, age:int);
+
+CREATE OR REPLACE TYPE ds_randomuser_results_results_id AS REGISTER OF (name:text, value:text);
+
+CREATE OR REPLACE TYPE ds_randomuser_results_results_picture AS REGISTER OF (large:text, medium:text, thumbnail:text);
+
+CREATE OR REPLACE TYPE ds_randomuser_results_results AS REGISTER OF (gender:text, name:ds_randomuser_results_results_name, location:ds_randomuser_results_results_location, email:text, login:ds_randomuser_results_results_login, dob:ds_randomuser_results_results_dob, registered:ds_randomuser_results_results_registered, phone:text, cell:text, id:ds_randomuser_results_results_id, picture:ds_randomuser_results_results_picture, nat:text);
+
+CREATE OR REPLACE TYPE ds_randomuser_results AS ARRAY OF ds_randomuser_results_results;
+
+CREATE OR REPLACE TYPE ds_randomuser_info AS REGISTER OF (seed:text, results:int, page:int, version:text);
+
+CREATE OR REPLACE TABLE bv_randomuser I18N fr_euro (
+        results:ds_randomuser_results,
+        info:ds_randomuser_info
+    )
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD ds_randomuser(
+        I18N fr_euro
+        CONSTRAINTS (
+             ADD results NOS ZERO ()
+             ADD results NOS ZERO ()
+             ADD results.gender NOS ZERO ()
+             ADD results.name NOS ZERO ()
+             ADD results.name.title NOS ZERO ()
+             ADD results.name.first NOS ZERO ()
+             ADD results.name.last NOS ZERO ()
+             ADD results.location NOS ZERO ()
+             ADD results.location.street NOS ZERO ()
+             ADD results.location.street.number NOS ZERO ()
+             ADD results.location.street.name NOS ZERO ()
+             ADD results.location.city NOS ZERO ()
+             ADD results.location.state NOS ZERO ()
+             ADD results.location.country NOS ZERO ()
+             ADD results.location.postcode NOS ZERO ()
+             ADD results.location.coordinates NOS ZERO ()
+             ADD results.location.coordinates.latitude NOS ZERO ()
+             ADD results.location.coordinates.longitude NOS ZERO ()
+             ADD results.location.timezone NOS ZERO ()
+             ADD results.location.timezone.offset_0 NOS ZERO ()
+             ADD results.location.timezone.description NOS ZERO ()
+             ADD results.email NOS ZERO ()
+             ADD results.login NOS ZERO ()
+             ADD results.login.uuid NOS ZERO ()
+             ADD results.login.username NOS ZERO ()
+             ADD results.login.password NOS ZERO ()
+             ADD results.login.salt NOS ZERO ()
+             ADD results.login.md5 NOS ZERO ()
+             ADD results.login.sha1 NOS ZERO ()
+             ADD results.login.sha256 NOS ZERO ()
+             ADD results.dob NOS ZERO ()
+             ADD results.dob.date NOS ZERO ()
+             ADD results.dob.age NOS ZERO ()
+             ADD results.registered NOS ZERO ()
+             ADD results.registered.date NOS ZERO ()
+             ADD results.registered.age NOS ZERO ()
+             ADD results.phone NOS ZERO ()
+             ADD results.cell NOS ZERO ()
+             ADD results.id NOS ZERO ()
+             ADD results.id.name NOS ZERO ()
+             ADD results.id.value NOS ZERO ()
+             ADD results.picture NOS ZERO ()
+             ADD results.picture.large NOS ZERO ()
+             ADD results.picture.medium NOS ZERO ()
+             ADD results.picture.thumbnail NOS ZERO ()
+             ADD results.nat NOS ZERO ()
+             ADD info NOS ZERO ()
+             ADD info.seed NOS ZERO ()
+             ADD info.results NOS ZERO ()
+             ADD info.page NOS ZERO ()
+             ADD info.version NOS ZERO ()
+        )
+        OUTPUTLIST (info, results
+        )
+        WRAPPER (json ds_randomuser)
+    );
+

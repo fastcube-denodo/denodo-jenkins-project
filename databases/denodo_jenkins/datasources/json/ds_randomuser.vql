@@ -1,0 +1,6 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE DATASOURCE JSON ds_randomuser
+    ROUTE HTTP 'http.CommonsHttpClientConnection,120000' GET '${databases.denodo_jenkins.datasources.json.ds_randomuser.ROUTE.HTTP.URL}'
+    AUTHENTICATION OFF
+    PROXY OFF;
+

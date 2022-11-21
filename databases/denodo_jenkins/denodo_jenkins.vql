@@ -1,0 +1,5 @@
+﻿CREATE OR REPLACE DATABASE denodo_jenkins '';
+
+ALTER DATABASE denodo_jenkins
+  CHARSET DEFAULT;
+
