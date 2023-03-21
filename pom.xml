@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <modelVersion>4.0.0</modelVersion>
+
+  <groupId>denodo</groupId>
+  <artifactId>denodo</artifactId>
+  <version>2.0</version>
+  <properties>
+    <sonar.host.url>http://localhost:9000</sonar.host.url>
+    <sonar.projectName>denodo</sonar.projectName>
+    <sonar.login>9d29e7db67382d7e50cbbb8f89b8dbba8df43ce1</sonar.login>
+    <sonar.sources>.</sonar.sources>
+    
+    
+  </properties>
+  
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>3.5.0.1254</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+
+  
+
+</project>
